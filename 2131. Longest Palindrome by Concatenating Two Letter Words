@@ -1,0 +1,31 @@
+class Solution {
+public:
+    int longestPalindrome(vector<string>& words) {
+         unordered_map<string, int> count;
+        for (string word : words) count[word]++;
+
+        int length = 0;
+        bool hasMiddle = false;
+
+        for (auto& [word, freq] : count) {
+            string rev = string() + word[1] + word[0];  
+
+            if (word == rev) {
+                // Example: "cc"
+                length += (freq / 2) * 4;  
+                if (freq % 2 == 1) hasMiddle = true; 
+            } else if (count.count(rev)) {
+                int pair = min(freq, count[rev]);
+                length += pair * 4;
+                count[rev] = 0; 
+                count[word] = 0;
+            }
+        }
+
+        if (hasMiddle) length += 2;
+
+        return length;
+    }
+        
+    
+};
